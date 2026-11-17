@@ -44,6 +44,7 @@
           </label>
           <label class="check"><input id="showLens" type="checkbox" checked /> Tampilkan lensa</label>
           <label class="check"><input id="showDate" type="checkbox" checked /> Tampilkan tanggal</label>
+          <label class="check"><input id="showLogo" type="checkbox" checked /> Tampilkan logo brand</label>
           <label class="field">Teks tambahan / tanda tangan
             <input id="signature" type="text" placeholder="mis. © Farid" />
           </label>
@@ -51,6 +52,14 @@
 
         <section class="group">
           <h2>Data foto ini <small>(bisa diedit)</small></h2>
+          <label class="field">Brand
+            <select id="m-brand" disabled></select>
+          </label>
+          <div class="logo-actions">
+            <input id="logoFile" type="file" accept="image/svg+xml,image/png,image/webp" hidden />
+            <button id="uploadLogo" type="button">Unggah logo sendiri</button>
+            <button id="delLogo" type="button" hidden>Hapus logo</button>
+          </div>
           <label class="field">Kamera <input id="m-camera" type="text" /></label>
           <label class="field">Lensa <input id="m-lens" type="text" /></label>
           <label class="field">Parameter <input id="m-params" type="text" /></label>

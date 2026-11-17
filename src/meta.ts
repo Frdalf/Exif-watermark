@@ -5,6 +5,8 @@ export interface Meta {
   lens: string;
   params: string;
   date: string;
+  make: string;
+  brand: string;
 }
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -37,7 +39,67 @@ export function cameraName(make?: string, model?: string): string {
   return `${mk} ${md}`;
 }
 
-export const EMPTY_META: Meta = { camera: '', lens: '', params: '', date: '' };
+const BRAND_RULES: [RegExp, string][] = [
+  [/fujifilm/, 'fujifilm'],
+  [/\b(xiaomi|redmi|poco)\b/, 'xiaomi'],
+  [/samsung/, 'samsung'],
+  [/sony/, 'sony'],
+  [/canon/, 'canon'],
+  [/nikon/, 'nikon'],
+  [/apple/, 'apple'],
+  [/panasonic|lumix/, 'panasonic'],
+  [/honor/, 'honor'],
+  [/huawei/, 'huawei'],
+  [/oneplus/, 'oneplus'],
+  [/oppo/, 'oppo'],
+  [/vivo/, 'vivo'],
+  [/realme/, 'realme'],
+  [/google/, 'google'],
+  [/\bdji\b/, 'dji'],
+  [/gopro/, 'gopro'],
+  [/leica/, 'leica'],
+  [/hasselblad/, 'hasselblad'],
+  [/olympus|om digital/, 'olympus'],
+  [/ricoh|pentax/, 'ricoh'],
+  [/sigma/, 'sigma'],
+  [/kodak/, 'kodak'],
+  [/motorola/, 'motorola'],
+  [/asus/, 'asus'],
+  [/nokia/, 'nokia'],
+  [/\blg\b|lg electronics|lge/, 'lg'],
+];
+
+const MODEL_FALLBACKS: [RegExp, string][] = [
+  [/^pixel\b/, 'google'],
+  [/^(iphone|ipad)\b/, 'apple'],
+  [/^sm-/, 'samsung'],
+  [/^(ilce|ilca|dsc|zv)-/, 'sony'],
+  [/^(redmi|poco|xiaomi)\b/, 'xiaomi'],
+];
+
+/** Normalisasi EXIF Make/Model menjadi kunci brand (kosong jika tidak dikenali). */
+export function normalizeBrand(make?: string, model?: string): string {
+  const mk = (make ?? '').trim().toLowerCase();
+  const md = (model ?? '').trim().toLowerCase();
+
+  if (mk) {
+    for (const [re, key] of BRAND_RULES) {
+      if (re.test(mk)) return key;
+    }
+  }
+  if (md) {
+    // Cek Xiaomi/Redmi/POCO di Model juga (sering hanya tertulis di Model)
+    if (/\b(xiaomi|redmi|poco)\b/.test(md)) return 'xiaomi';
+    if (!mk) {
+      for (const [re, key] of MODEL_FALLBACKS) {
+        if (re.test(md)) return key;
+      }
+    }
+  }
+  return '';
+}
+
+export const EMPTY_META: Meta = { camera: '', lens: '', params: '', date: '', make: '', brand: '' };
 
 export async function readMeta(file: File): Promise<Meta> {
   let t: any = null;
@@ -69,10 +131,15 @@ export async function readMeta(file: File): Promise<Meta> {
   if (shutter) parts.push(shutter);
   if (typeof t.ISO === 'number' && t.ISO > 0) parts.push(`ISO ${t.ISO}`);
 
+  const make = (t.Make ?? '').toString().trim();
+  const model = (t.Model ?? '').toString().trim();
+
   return {
-    camera: cameraName(t.Make, t.Model),
+    camera: cameraName(make, model),
     lens: (t.LensModel ?? '').toString().trim(),
     params: parts.join('  '),
     date: formatDate(t.DateTimeOriginal ?? t.CreateDate),
+    make,
+    brand: normalizeBrand(make, model),
   };
 }

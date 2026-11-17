@@ -49,6 +49,10 @@ npx wrangler pages deploy dist --project-name exif-frame
 - Foto sangat besar (di atas ~100 MP) bisa gagal di browser HP karena batas ukuran kanvas.
 - Ingin menambah template? Edit `src/render.ts`, tambahkan `id` di `TemplateId`, dan tambahkan tombolnya di `index.html`.
 
+## Catatan merek dagang
+
+Logo brand bawaan berasal dari proyek `simple-icons` (lisensi CC0) dan merupakan merek dagang milik pemiliknya masing-masing. Logo hanya digunakan untuk mengidentifikasi perangkat kamera yang dipakai pengguna pada fotonya sendiri, tanpa afiliasi maupun dukungan (*endorsement*) dari pihak pemilik merek. Untuk brand yang belum tersedia, pengguna dapat mengunggah logo sendiri secara lokal di browser.
+
 ## Lisensi
 
 [MIT](LICENSE)
