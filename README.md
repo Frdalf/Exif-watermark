@@ -1,36 +1,39 @@
 # EXIF Frame
 
-A static web app to add clean EXIF frames and watermarks to your photos. Everything is processed locally in your browser using HTML5 Canvas — your photos are never uploaded to any server.
+Web app statis, 100% client-side, untuk menambahkan bingkai dan watermark data EXIF ke foto. Semua diproses di browser menggunakan Canvas 2D API — foto tidak pernah diunggah ke server mana pun.
 
-## Features
+## Fitur
 
-- **Automatic EXIF parsing**: Reads camera, lens, focal length, aperture, shutter speed, ISO, and capture date.
-- **4 frame templates**: Classic, Centered, Single-line, and Overlay, with light (white) or dark (black) themes.
-- **Manual editing**: Edit any EXIF field manually (useful when metadata is stripped, e.g. photos saved from messaging apps).
-- **Custom signature / text**: Add your own watermark or copyright text (e.g. `© Farid`).
-- **Batch processing**: Select multiple photos at once and download all results as a ZIP archive.
-- **Original resolution export**: Export as JPEG or PNG at full resolution. Preferences are saved locally in the browser.
+- **Baca EXIF otomatis**: kamera, lensa, focal length (utamakan 35mm eq.), aperture, shutter speed, ISO, tanggal
+- **8 template**:
+  - Strip: Klasik, Tengah, Satu baris, Overlay
+  - Berbingkai: Polaroid, Film, Blur, Bingkai tipis
+- **Tema putih / hitam** dan ukuran teks yang dapat diatur (`0.6`–`1.8`)
+- **Edit manual**: seluruh data EXIF per foto bisa diedit (berguna saat EXIF hilang, mis. foto dari WhatsApp)
+- **Teks tambahan / tanda tangan** (mis. `© Farid`)
+- **Batch**: unggah banyak foto sekaligus (klik atau drag & drop), pratinjau langsung, unduh satu per satu atau semua sebagai ZIP
+- **Ekspor resolusi asli** (JPEG atau PNG) dengan pengaturan tersimpan di `localStorage`
 
-## Run Locally
+## Jalankan lokal
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Deploy to Cloudflare Pages
+## Deploy ke Cloudflare Pages
 
-### Option A: Via Git (recommended, auto-deploys on every push)
+### Opsi A: lewat Git (disarankan, otomatis deploy tiap push)
 
-1. Push this repository to GitHub.
-2. Go to Cloudflare Dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
-3. Select your repository and configure:
-   - **Framework preset:** None (or Vite)
+1. Push repositori ini ke GitHub.
+2. Cloudflare Dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
+3. Pilih repositori, lalu isi:
+   - **Framework preset:** None (atau Vite)
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
-4. Click **Save and Deploy**. Your site will be live at `https://<project-name>.pages.dev`.
+4. **Save and Deploy**. Hasilnya akan tersedia di `https://<nama-proyek>.pages.dev`.
 
-### Option B: Direct upload from terminal
+### Opsi B: upload langsung dari terminal
 
 ```bash
 npm install
@@ -38,14 +41,14 @@ npm run build
 npx wrangler pages deploy dist --project-name exif-frame
 ```
 
-*(First-time deploy will prompt you to log in via `npx wrangler login`.)*
+*(Pertama kali akan diminta login: `npx wrangler login`.)*
 
-## Notes
+## Catatan
 
-- **Supported input formats:** JPEG, PNG, and WebP. HEIC is not supported unless natively decoded by your browser (e.g. Safari).
-- **Large images:** Very high-resolution photos (above ~100 MP) may fail on mobile browsers due to canvas size limits.
-- **Adding custom templates:** Edit `src/render.ts`, add a new `id` to `TemplateId`, and add the corresponding button in `index.html`.
+- Format input: JPEG, PNG, WebP. HEIC belum didukung kecuali browser bisa membukanya sendiri (Safari).
+- Foto sangat besar (di atas ~100 MP) bisa gagal di browser HP karena batas ukuran kanvas.
+- Ingin menambah template? Edit `src/render.ts`, tambahkan `id` di `TemplateId`, dan tambahkan tombolnya di `index.html`.
 
-## License
+## Lisensi
 
 [MIT](LICENSE)
