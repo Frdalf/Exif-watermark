@@ -44,22 +44,120 @@
           </label>
           <label class="check"><input id="showLens" type="checkbox" checked /> Tampilkan lensa</label>
           <label class="check"><input id="showDate" type="checkbox" checked /> Tampilkan tanggal</label>
-          <label class="check"><input id="showLogo" type="checkbox" checked /> Tampilkan logo brand</label>
           <label class="field">Teks tambahan / tanda tangan
             <input id="signature" type="text" placeholder="mis. © Farid" />
           </label>
         </section>
 
         <section class="group">
-          <h2>Data foto ini <small>(bisa diedit)</small></h2>
-          <label class="field">Brand
+          <h2>Tampilan</h2>
+
+          <div class="field">
+            <span>Aspect ratio</span>
+            <div class="seg grid-5" id="aspectPreset">
+              <button data-v="original" class="on">Asli</button>
+              <button data-v="1:1">1:1</button>
+              <button data-v="4:5">4:5</button>
+              <button data-v="3:4">3:4</button>
+              <button data-v="2:3">2:3</button>
+              <button data-v="3:2">3:2</button>
+              <button data-v="4:3">4:3</button>
+              <button data-v="16:9">16:9</button>
+              <button data-v="9:16">9:16</button>
+              <button data-v="custom">Kustom</button>
+            </div>
+            <div class="ratio-custom" id="ratioCustom" hidden>
+              <input id="ratioW" type="number" min="1" max="100" step="1" value="4" aria-label="Lebar rasio" />
+              <span>:</span>
+              <input id="ratioH" type="number" min="1" max="100" step="1" value="5" aria-label="Tinggi rasio" />
+            </div>
+          </div>
+
+          <div class="field" id="fitGroup" hidden>
+            <div class="seg" id="aspectFit">
+              <button data-v="contain" class="on">Fit (utuh)</button>
+              <button data-v="cover">Crop (isi penuh)</button>
+            </div>
+            <div class="crop-sliders" id="cropSliders" hidden>
+              <label class="row">Posisi crop X <input id="cropX" type="range" min="0" max="100" step="1" value="50" /></label>
+              <label class="row">Posisi crop Y <input id="cropY" type="range" min="0" max="100" step="1" value="50" /></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <span>Warna frame</span>
+            <div class="color-row">
+              <input id="framePicker" type="color" value="#ffffff" aria-label="Pilih warna frame" />
+              <input id="frameHex" type="text" value="" placeholder="Ikuti tema" maxlength="7" />
+              <button id="frameReset" type="button" class="mini-btn">Reset tema</button>
+            </div>
+            <div class="swatches" id="frameSwatches">
+              <button type="button" data-c="#ffffff" style="background:#ffffff" title="Putih"></button>
+              <button type="button" data-c="#101010" style="background:#101010" title="Hitam"></button>
+              <button type="button" data-c="#fbfaf6" style="background:#fbfaf6" title="Krem"></button>
+              <button type="button" data-c="#e5e7eb" style="background:#e5e7eb" title="Abu muda"></button>
+              <button type="button" data-c="#27272a" style="background:#27272a" title="Abu gelap"></button>
+              <button type="button" data-c="#1e293b" style="background:#1e293b" title="Slate"></button>
+              <button type="button" data-c="#f3ece1" style="background:#f3ece1" title="Pasir"></button>
+            </div>
+            <div class="mini-actions">
+              <button id="frameAutoPhoto" type="button" class="mini-btn" disabled>Otomatis dari foto</button>
+              <button id="frameAutoLight" type="button" class="mini-btn" disabled>Terang</button>
+              <button id="frameAutoDark" type="button" class="mini-btn" disabled>Gelap</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <span>Warna teks</span>
+            <label class="check"><input id="textAuto" type="checkbox" checked /> Otomatis (kontras)</label>
+            <div class="color-row" id="textColorRow">
+              <input id="textPicker" type="color" value="#111111" aria-label="Pilih warna teks" />
+              <input id="textHex" type="text" value="#111111" placeholder="#111111" maxlength="7" />
+            </div>
+            <div class="swatches" id="textSwatches">
+              <button type="button" data-c="#111111" style="background:#111111" title="Hitam"></button>
+              <button type="button" data-c="#ffffff" style="background:#ffffff" title="Putih"></button>
+              <button type="button" data-c="#f59e0b" style="background:#f59e0b" title="Amber"></button>
+              <button type="button" data-c="#d4d4d8" style="background:#d4d4d8" title="Abu terang"></button>
+              <button type="button" data-c="#1e293b" style="background:#1e293b" title="Slate"></button>
+            </div>
+            <p class="warn" id="contrastWarn" hidden>Kontras teks terhadap frame rendah (&lt; 3:1).</p>
+          </div>
+
+          <div class="field">
+            <span>Jenis font <small id="fontLoading" hidden>(memuat font…)</small></span>
+            <select id="fontSelect"></select>
+            <div class="mini-actions">
+              <input id="fontFile" type="file" accept=".ttf,.otf,.woff2" hidden />
+              <button id="uploadFont" type="button" class="mini-btn">Unggah font (TTF/OTF/WOFF2)</button>
+              <button id="delFont" type="button" class="mini-btn" hidden>Hapus font</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="group">
+          <h2>Logo</h2>
+          <label class="check"><input id="showLogo" type="checkbox" checked /> Tampilkan logo brand</label>
+          <div class="seg" id="logoColor">
+            <button data-v="black" class="on">Hitam</button>
+            <button data-v="white">Putih</button>
+          </div>
+          <label class="field">Brand <small>(per foto)</small>
             <select id="m-brand" disabled></select>
           </label>
-          <div class="logo-actions">
+          <div class="mini-actions">
             <input id="logoFile" type="file" accept="image/svg+xml,image/png,image/webp" hidden />
-            <button id="uploadLogo" type="button">Unggah logo sendiri</button>
-            <button id="delLogo" type="button" hidden>Hapus logo</button>
+            <button id="uploadLogo" type="button" class="mini-btn">Unggah logo sendiri</button>
+            <button id="delLogo" type="button" class="mini-btn" hidden>Hapus logo</button>
           </div>
+          <div class="logo-preview-box" id="logoPreviewBox" hidden>
+            <span>Pratinjau siluet:</span>
+            <canvas id="logoPreview" width="96" height="36"></canvas>
+          </div>
+        </section>
+
+        <section class="group">
+          <h2>Data foto ini <small>(bisa diedit)</small></h2>
           <label class="field">Kamera <input id="m-camera" type="text" /></label>
           <label class="field">Lensa <input id="m-lens" type="text" /></label>
           <label class="field">Parameter <input id="m-params" type="text" /></label>
@@ -74,6 +172,14 @@
           </div>
           <label class="row" id="qualityRow">Kualitas JPEG
             <input id="quality" type="range" min="0.7" max="1" step="0.01" value="0.95" />
+          </label>
+          <label class="field">Batas sisi terpanjang
+            <select id="maxEdge">
+              <option value="">Asli (resolusi penuh)</option>
+              <option value="4096">4096 px</option>
+              <option value="2048">2048 px</option>
+              <option value="1080">1080 px</option>
+            </select>
           </label>
           <div class="actions">
             <button id="dlOne" class="primary" disabled>Unduh foto ini</button>
